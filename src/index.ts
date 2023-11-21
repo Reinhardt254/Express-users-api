@@ -18,7 +18,8 @@ app.use(compression());
 dotenv.config();
 
 const server = http.createServer(app);
+const port = process.env.PORT;
 
-server.listen(8000, () => {
-   "server running on port 8000"
+server.listen(port, () => {
+   `server running on port ${port}`
 });
