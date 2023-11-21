@@ -33,10 +33,10 @@ export const getAllTheUsers = async() => {
    return allUsers;
 }
 
-export const getUsersByEmail = async (email: string) => {
+export const getUsersById = async (id: string) => {
    const users = await prismadb.users.findFirst({
       where : {
-         email: email
+         id : id
       }
    });
 

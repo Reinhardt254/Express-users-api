@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import compression from "compression";
 import dotenv from "dotenv";
 import http from "http";
+import router from "./routes"
 
 const app = express();
 
@@ -23,3 +24,5 @@ const port = process.env.PORT;
 server.listen(port, () => {
    `server running on port ${port}`
 });
+
+app.use("/", router())

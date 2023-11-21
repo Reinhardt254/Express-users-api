@@ -1,15 +1,32 @@
 import express from "express"
-import { createNewUser, deleteUserById, getAllTheUsers, updateUserById } from "../services/services";
+import { createNewUser, deleteUserById, getAllTheUsers, getUsersById, updateUserById } from "../services/services";
 
 export const getAllUsers = async (req: express.Request, res: express.Response) => {
    try{
-
+ 
       const allUsers = getAllTheUsers()
 
       return res.json(allUsers)
    }catch(error){
       console.log(error);
       res.sendStatus(400);
+   }
+}
+
+export const getUser = async (req: express.Request, res: express.Response) => {
+   try{
+    const { id } = req.params;
+
+    if(!id){
+      return res.sendStatus(400);
+    }
+
+    const user = await getUsersById(id)
+
+    res.json(user);
+   }catch(error){
+      console.log(error);
+      res.sendStatus(400)
    }
 }
 
@@ -29,7 +46,7 @@ export const createUser = async (req: express.Request, res: express.Response) =>
       res.sendStatus(400);
    }
 }
-
+ 
 export const UpdateUser = async (req: express.Request, res: express.Response) => {
    try{
       const {name, email, phoneNumber} = req.body;
