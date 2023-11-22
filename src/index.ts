@@ -15,6 +15,7 @@ app.use(cors({
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(compression());
+// app.use(express.json())
 
 dotenv.config();
 
@@ -22,7 +23,7 @@ const server = http.createServer(app);
 const port = process.env.PORT;
 
 server.listen(port, () => {
-   `server running on port ${port}`
+   console.log(`server running on port ${port}`)
 });
 
 app.use("/", router())

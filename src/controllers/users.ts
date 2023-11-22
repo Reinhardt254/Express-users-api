@@ -1,10 +1,10 @@
 import express from "express"
-import { createNewUser, deleteUserById, getAllTheUsers, getUsersById, updateUserById } from "../services/services";
+import { createNewUser, deleteUserById, getAllTheUsers, getUsersById, updateUserById } from "../services/users";
 
 export const getAllUsers = async (req: express.Request, res: express.Response) => {
    try{
  
-      const allUsers = getAllTheUsers()
+      const allUsers = await getAllTheUsers()
 
       return res.json(allUsers)
    }catch(error){
@@ -32,14 +32,15 @@ export const getUser = async (req: express.Request, res: express.Response) => {
 
 export const createUser = async (req: express.Request, res: express.Response) => {
    try{
-      const {name, email, phoneNumber} = req.body;
+      const {name, phoneNumber, address, age, gender} = req.body;
 
-      if(!name || !email || !phoneNumber){
+      if(!name || !phoneNumber || !address || !age || !gender){
+         console.log("missing value")
          return res.sendStatus(400)
       }
 
-      const createdUser = await createNewUser(email, name, phoneNumber)
-
+      const createdUser = await createNewUser( name, phoneNumber, address, age, gender)
+     
       return res.json(createdUser)
    }catch(error){
       console.log(error);
@@ -49,15 +50,16 @@ export const createUser = async (req: express.Request, res: express.Response) =>
  
 export const UpdateUser = async (req: express.Request, res: express.Response) => {
    try{
-      const {name, email, phoneNumber} = req.body;
+      const {name, email, phoneNumber, address, age, gender} = req.body;
       const { id } = req.params;
 
-      if(!name || !email || !phoneNumber || !id){
+      if(!name || !phoneNumber || !address || !age || !gender || !id){
+         console.log("no data in update")
          return res.sendStatus(400)
       }
 
       const updatedUser = await updateUserById(
-         email, name, phoneNumber, id
+          name, phoneNumber, address, age, gender, id
       )
       
       return res.json(updatedUser)

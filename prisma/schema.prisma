@@ -1,3 +1,4 @@
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -7,11 +8,24 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model users{
+model userAuthentication{
   id           String @id @default(auto()) @map("_id") @db.ObjectId
-  userName     String
-  phoneNumber  String
-  email        String
+  email     String @unique
+  password     String 
+  salt         String
+  sessionToken String
+
+  createdAt    DateTime @default(now()) @map(name: "created_at")
+  updatedAt    DateTime @default(now()) @map(name: "updated_at")
+}
+
+model users{
+  id            String @id @default(auto()) @map("_id") @db.ObjectId
+  name          String
+  phoneNumber   String
+  address       String
+  age           String
+  gender        String
 
   createdAt DateTime @default(now()) @map(name: "created_at")
   updatedAt DateTime @default(now()) @map(name: "updated_at")

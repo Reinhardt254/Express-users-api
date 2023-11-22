@@ -1,26 +1,30 @@
 import prismadb from "../../utils/prisma"
 
-export const createNewUser = async (email: string, name: string, phoneNumber: string) => {
+export const createNewUser = async ( name: string, phoneNumber: string, address: string, age: string, gender: string) => {
    const newUser = await prismadb.users.create({
       data : {
-         email: email,
-         userName: name,
+         name: name,
          phoneNumber: phoneNumber,
+         address: address,
+         age: age,
+         gender: gender,
       }
    })
 
    return newUser
 }
 
-export const updateUserById = async (id: string, email: string, name: string, phoneNumber: string) => {
+export const updateUserById = async (  name: string, phoneNumber: string, address: string, age: string, gender: string, id: string,) => {
    const updateUser = await prismadb.users.updateMany({
       where: {
          id : id
       },
       data: {
-         email: email,
-         userName: name,
+         name: name,
          phoneNumber: phoneNumber,
+         address: address,
+         age: age,
+         gender: gender,
       }
    })
 
