@@ -1,4 +1,4 @@
-import { hashedToken } from "auth/hashToken";
+import {  hashedToken } from "auth/hashToken";
 import { generateTokens } from "auth/jwt";
 import express from "express";
 import { addRefreshTokenToWhitelist, deleteRefreshToken, findRefreshTokenById, revokeTokens } from "services/authentication";
@@ -10,6 +10,7 @@ import {
 
 const { v4: uuidv4 } = require("uuid");
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken')
 
 export const registerUser = async (
   req: express.Request,
@@ -32,7 +33,7 @@ export const registerUser = async (
 
     const user = await createUserByEmailAndPassword({ email, password });
     const jti = uuidv4();
-    const { accessToken, refreshToken } = generateTokens(user, jti);
+    const { accessToken, refreshToken } = generateTokens(user.id, jti);
     await addRefreshTokenToWhitelist({ jti, refreshToken, authId: user.id });
 
     res.json({
@@ -51,7 +52,7 @@ export const loginUser = async(req: express.Request, res: express.Response) => {
 
     if(!email || !password){
       res.status(400);
-      throw new Error('You mus provide an email and password to login')
+      throw new Error('You must provide an email and password to login')
     }
 
     const existingUser = await findUserByEmail(email);
@@ -68,8 +69,8 @@ export const loginUser = async(req: express.Request, res: express.Response) => {
     }
 
     const jti = uuidv4();
-    const { accessToken, refreshToken } = generateTokens(existingUser, jti);
-    await addRefreshTokenToWhitelist({ jti, refreshToken, userId: existingUser.id });
+    const { accessToken, refreshToken } = generateTokens(existingUser.id, jti);
+    await addRefreshTokenToWhitelist({ jti, refreshToken, authId: existingUser.id });
 
     res.json({
       accessToken,
@@ -98,8 +99,8 @@ export async function refreshToken(req: express.Request, res: express.Response){
       throw new Error('Unauthorized');
     }
 
-    const hashedToken = hashedToken(refreshToken);
-    if (hashedToken !== savedRefreshToken.hashedToken) {
+    const hashedTokenn = hashedToken(refreshToken);
+    if (hashedTokenn !== savedRefreshToken.hashedToken) {
       res.status(401);
       throw new Error('Unauthorized');
     }
@@ -112,8 +113,8 @@ export async function refreshToken(req: express.Request, res: express.Response){
 
     await deleteRefreshToken(savedRefreshToken.id);
     const jti = uuidv4();
-    const { accessToken, refreshToken: newRefreshToken } = generateTokens(user, jti);
-    await addRefreshTokenToWhitelist({ jti, refreshToken: newRefreshToken, userId: user.id });
+    const { accessToken, refreshToken: newRefreshToken } = generateTokens(user.id, jti);
+    await addRefreshTokenToWhitelist({ jti, refreshToken: newRefreshToken, authId: user.id });
     
     res.json({
       accessToken,

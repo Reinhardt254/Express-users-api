@@ -1,3 +1,34 @@
+ import express from "express"
+ const jwt = require("jsonwebtoken")
+
+export function isAuthenticated(req: express.Request, res: express.Response, next: express.NextFunction) {
+   const { authorization } = req.headers;
+ 
+   if (!authorization) {
+     res.status(401);
+     throw new Error('🚫 Un-Authorized 🚫');
+   }
+ 
+   try {
+     const token = authorization.split(' ')[1];
+     const payload = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
+
+     if(!payload){
+      res.status(400)
+      throw new Error('unauthorized')
+     }
+
+     next();
+   } catch (err) {
+     res.status(401);
+     if (err.name === 'TokenExpiredError') {
+       throw new Error(err.name);
+     }
+     throw new Error('🚫 Un-Authorized 🚫');
+   }
+ }
+
+
 // import { getUserBySessionToken } from "db/users";
 // import express from "express";
 // import {get, merge} from "lodash";

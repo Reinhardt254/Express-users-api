@@ -39,10 +39,10 @@ export async function deleteRefreshToken(id: string){
    return deletedRefreshToken;
 }
 
-export async function revokeTokens(userId: string){
+export async function revokeTokens(id: string){
    const revokedTokens = await prismadb.refreshToken.updateMany({
       where: {
-         UserId,
+         id,
       },
       data: {
          revoked: true,
