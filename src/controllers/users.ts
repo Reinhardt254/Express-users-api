@@ -1,83 +1,113 @@
-import express from "express"
-import { createNewUser, deleteUserById, getAllTheUsers, getUsersById, updateUserById } from "../services/users";
+// import express from "express";
+// import {
+//   createNewUser,
+//   deleteUserById,
+//   getAllTheUsers,
+//   getUsersById,
+//   updateUserById,
+// } from "../services/userAuth";
 
-export const getAllUsers = async (req: express.Request, res: express.Response) => {
-   try{
- 
-      const allUsers = await getAllTheUsers()
+// export const getAllUsers = async (
+//   req: express.Request,
+//   res: express.Response
+// ) => {
+//   try {
+//     const allUsers = await getAllTheUsers();
 
-      return res.json(allUsers)
-   }catch(error){
-      console.log(error);
-      res.sendStatus(400);
-   }
-}
+//     return res.json(allUsers);
+//   } catch (error) {
+//     console.log(error);
+//     res.sendStatus(400);
+//   }
+// };
 
-export const getUser = async (req: express.Request, res: express.Response) => {
-   try{
-    const { id } = req.params;
+// export const getUser = async (req: express.Request, res: express.Response) => {
+//   try {
+//     const { id } = req.params;
 
-    if(!id){
-      return res.sendStatus(400);
-    }
+//     if (!id) {
+//       return res.sendStatus(400);
+//     }
 
-    const user = await getUsersById(id)
+//     const user = await getUsersById(id);
 
-    res.json(user);
-   }catch(error){
-      console.log(error);
-      res.sendStatus(400)
-   }
-}
+//     res.json(user);
+//   } catch (error) {
+//     console.log(error);
+//     res.sendStatus(400);
+//   }
+// };
 
-export const createUser = async (req: express.Request, res: express.Response) => {
-   try{
-      const {name, phoneNumber, address, age, gender} = req.body;
+// export const createUser = async (
+//   req: express.Request,
+//   res: express.Response
+// ) => {
+//   try {
+//     const { name, phoneNumber, address, age, gender, email } = req.body;
 
-      if(!name || !phoneNumber || !address || !age || !gender){
-         console.log("missing value")
-         return res.sendStatus(400)
-      }
+//     if (!name || !phoneNumber || !address || !age || !gender || !email) {
+//       console.log("missing value");
+//       return res.sendStatus(400);
+//     }
 
-      const createdUser = await createNewUser( name, phoneNumber, address, age, gender)
-     
-      return res.json(createdUser)
-   }catch(error){
-      console.log(error);
-      res.sendStatus(400);
-   }
-}
- 
-export const UpdateUser = async (req: express.Request, res: express.Response) => {
-   try{
-      const {name, email, phoneNumber, address, age, gender} = req.body;
-      const { id } = req.params;
+//     const createdUser = await createNewUser(
+//       name,
+//       phoneNumber,
+//       address,
+//       age,
+//       gender,
+//       email
+//     );
 
-      if(!name || !phoneNumber || !address || !age || !gender || !id){
-         console.log("no data in update")
-         return res.sendStatus(400)
-      }
+//     return res.json(createdUser);
+//   } catch (error) {
+//     console.log(error);
+//     res.sendStatus(400);
+//   }
+// };
 
-      const updatedUser = await updateUserById(
-          name, phoneNumber, address, age, gender, id
-      )
-      
-      return res.json(updatedUser)
-   }catch(error){
-      console.log(error);
-      res.sendStatus(400);
-   }
-}
+// export const UpdateUser = async (
+//   req: express.Request,
+//   res: express.Response
+// ) => {
+//   try {
+//     const { name, email, phoneNumber, address, age, gender } = req.body;
+//     const { id } = req.params;
 
-export const deleteUser = async (req: express.Request, res: express.Response) => {
-   try{
-      const { id } = req.params;
+//     if (!name || !phoneNumber || !address || !age || !gender || !id || !email) {
+//       console.log("no data in update");
+//       return res.sendStatus(400);
+//     }
 
-      const deletedUser = await deleteUserById(id)
+//     const updatedUser = await updateUserById(
+//       name,
+//       phoneNumber,
+//       address,
+//       age,
+//       gender,
+//       id,
+//       email
+//     );
 
-      return res.json(deletedUser);
-   }catch(error){
-      console.log(error);
-      res.sendStatus(400);
-   }
-}
+//     return res.json(updatedUser);
+//   } catch (error) {
+//     console.log(error);
+//     res.sendStatus(400);
+//   }
+// };
+
+// export const deleteUser = async (
+//   req: express.Request,
+//   res: express.Response
+// ) => {
+//   try {
+//     const { id } = req.params;
+
+//     const deletedUser = await deleteUserById(id);
+
+//     return res.json(deletedUser);
+//   } catch (error) {
+//     console.log(error);
+//     res.sendStatus(400);
+//   }
+// };

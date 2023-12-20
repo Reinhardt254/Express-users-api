@@ -8,25 +8,48 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model userAuthentication{
-  id           String @id @default(auto()) @map("_id") @db.ObjectId
-  email     String @unique
-  password     String 
-  salt         String
-  sessionToken String
+model Auth {
+  id            String @id @default(uuid()) @map("_id") @db.ObjectId
+  email         String
+  password      String
 
-  createdAt    DateTime @default(now()) @map(name: "created_at")
-  updatedAt    DateTime @default(now()) @map(name: "updated_at")
-}
-
-model users{
-  id            String @id @default(auto()) @map("_id") @db.ObjectId
-  name          String
-  phoneNumber   String
-  address       String
-  age           String
-  gender        String
+  // user          User[]
+  refreshTokens RefreshToken[]
 
   createdAt DateTime @default(now()) @map(name: "created_at")
   updatedAt DateTime @default(now()) @map(name: "updated_at")
+}
+
+// model User {
+//   id            String @id @default(auto()) @map("_id") @db.ObjectId
+//   name          String
+//   email         String
+//   password      String
+//   phoneNumber   String
+//   address       String
+//   age           String
+//   gender        String
+
+//   authId        String @db.ObjectId
+//   Auth          Auth @relation(fields: [authId], references: [id], onDelete: Cascade)
+
+//   refreshTokens RefreshToken[]
+
+//   createdAt     DateTime @default(now()) @map(name: "created_at")
+//   updatedAt     DateTime @default(now()) @map(name: "updated_at")
+// }
+
+model RefreshToken {
+  id           String @id @default(uuid()) @map("_id") @db.ObjectId
+  hashedToken  String
+  revoked      Boolean @default(false)
+
+  // userId       String @db.ObjectId
+  // User         User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  authId      String @db.ObjectId
+  Auth        Auth @relation(fields: [authId], references: [id], onDelete: Cascade)
+
+  createdAt    DateTime @default(now()) @map(name: "created_at")
+  updatedAt    DateTime @default(now()) @map(name: "updated_at")
 }
