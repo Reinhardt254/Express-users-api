@@ -4,7 +4,7 @@ import express from 'express';
 export default(router: express.Router)=>{
    router.post('/register', registerUser);
    router.post('/login', loginUser);
-   router.post('/refreshtoken', refreshToken)
-   router.post('revokerefreshtokens', revokeRefreshTokens)
+   router.post('/refreshtoken', refreshToken);
+   router.post('revokerefreshtokens', revokeRefreshTokens);
 }
  
